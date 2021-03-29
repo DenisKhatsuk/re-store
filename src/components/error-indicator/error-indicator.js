@@ -2,10 +2,10 @@ import React from 'react';
 
 import './error-indicator.css';
 
-const ErrorIndicator = () => {
+const ErrorIndicator = ({ error = 'Something went wrong! Please contact store support.' }) => {
   return (
     <div className = "error-indicator">
-      <span>Something went wrong! Please contact store support.</span>
+      <span>{ error }</span>
     </div>
   );
 };
