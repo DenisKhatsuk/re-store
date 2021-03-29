@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import BookListItem from '../book-list-item';
+import Spinner from '../spinner';
 import { withBookstoreService } from '../hoc';
 import { compose } from '../../utils';
 import { booksLoaded } from '../../actions';
@@ -12,12 +13,15 @@ class BookList extends Component {
 
   componentDidMount() {
     const { bookstoreService, booksLoaded } = this.props;
-    const books = bookstoreService.getBooks();
-    booksLoaded(books);
+    bookstoreService.getBooks()
+      .then((books) => {
+        booksLoaded(books);
+      });
   }
 
   render() {
-    const { books } = this.props;
+    const { books, isLoading } = this.props;
+    if (isLoading) return <Spinner />;
     return (
       <ul className = "book-list">
         {
@@ -34,7 +38,7 @@ class BookList extends Component {
   }
 }
 
-const mapStateToProps = ({ books }) => ({ books });
+const mapStateToProps = ({ books, isLoading }) => ({ books, isLoading });
 const mapDispatchToProps = {
     booksLoaded
 };
