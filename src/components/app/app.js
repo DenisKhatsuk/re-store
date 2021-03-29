@@ -6,7 +6,7 @@ import './app.css';
 
 const App = () => {
   return (
-    <div className = "re-store-app">
+    <main role = "main" className = "container">
       <Switch>
         <Route 
           path = '/'
@@ -17,7 +17,7 @@ const App = () => {
           path = '/cart'
           component = { CartPage } />
       </Switch>
-    </div>
+    </main>
   );
 };
 
