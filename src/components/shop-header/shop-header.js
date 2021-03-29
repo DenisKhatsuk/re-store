@@ -10,7 +10,7 @@ const ShopHeader = ({ numItems, total }) => {
          role = "banner">
            ReStore
       </a>
-      <a href="#_">
+      <a href="#_" className = "shopping-cart">
         <i className = "cart-icon fa fa-shopping-cart"></i>
         {numItems} items (${ total })
       </a>
