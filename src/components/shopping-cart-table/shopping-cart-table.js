@@ -34,6 +34,9 @@ const ShoppingCartTable = () => {
           </tr>
         </tbody>
       </table>
+      <div className="total">
+        Total: $16.51
+      </div>
     </div>
   );
 };
