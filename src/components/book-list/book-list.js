@@ -13,17 +13,8 @@ import './book-list.css';
 class BookList extends Component {
 
   componentDidMount() {
-    const { 
-      bookstoreService, 
-      booksLoaded, 
-      booksRequested,
-      booksError } = this.props;
-    booksRequested();
-    bookstoreService.getBooks()
-      .then((books) => {
-        booksLoaded(books);
-      })
-      .catch((err) => booksError(err));
+    const { fetchBooks } = this.props;
+    fetchBooks();
   }
 
   render() {
@@ -47,13 +38,18 @@ class BookList extends Component {
 }
 
 const mapStateToProps = ({ books, isLoading, error }) => ({ books, isLoading, error });
-const actions = {
-    booksLoaded,
-    booksRequested,
-    booksError,
-};
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    fetchBooks: () => {
+      dispatch(booksRequested());
+      ownProps.bookstoreService.getBooks()
+        .then((books) => dispatch(booksLoaded(books)))
+        .catch((err) => dispatch(booksError(err)));
+    },
+  };
+}
 
 export default compose(
   withBookstoreService(),
-  connect(mapStateToProps, actions)
+  connect(mapStateToProps, mapDispatchToProps)
 )(BookList);
