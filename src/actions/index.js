@@ -18,6 +18,13 @@ const booksError = (error) => {
   };
 };
 
+const addBookToCart = (bookId) => {
+  return {
+    type: 'ADD_BOOK_TO_CART',
+    payload: bookId,
+  };
+};
+
 const fetchBooks = (dispatch, bookstoreService) => () => {
   dispatch(booksRequested());
   bookstoreService.getBooks()
@@ -26,5 +33,6 @@ const fetchBooks = (dispatch, bookstoreService) => () => {
 }
 
 export {
-  fetchBooks
+  fetchBooks,
+  addBookToCart
 };
