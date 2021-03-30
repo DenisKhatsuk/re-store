@@ -6,7 +6,7 @@ import Spinner from '../spinner';
 import ErrorIndicator from '../error-indicator';
 import { withBookstoreService } from '../hoc';
 import { compose } from '../../utils';
-import { booksLoaded, booksRequested, booksError } from '../../actions';
+import { fetchBooks } from '../../actions';
 
 import './book-list.css';
 
@@ -38,16 +38,9 @@ class BookList extends Component {
 }
 
 const mapStateToProps = ({ books, isLoading, error }) => ({ books, isLoading, error });
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    fetchBooks: () => {
-      dispatch(booksRequested());
-      ownProps.bookstoreService.getBooks()
-        .then((books) => dispatch(booksLoaded(books)))
-        .catch((err) => dispatch(booksError(err)));
-    },
-  };
-}
+const mapDispatchToProps = (dispatch, { bookstoreService }) => ({
+    fetchBooks: fetchBooks(dispatch, bookstoreService),
+  });
 
 export default compose(
   withBookstoreService(),
