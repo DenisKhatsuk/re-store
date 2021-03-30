@@ -6,11 +6,11 @@ import Spinner from '../spinner';
 import ErrorIndicator from '../error-indicator';
 import { withBookstoreService } from '../hoc';
 import { compose } from '../../utils';
-import { fetchBooks, addBookToCart } from '../../actions';
+import { fetchBooks, increaseBookInCart } from '../../actions';
 
 import './book-list.css';
 
-const BookList = ({ books, onAddToCart }) => {
+const BookList = ({ books, onAddToCart, onDeleteFromCart }) => {
   return (
     <ul className = "book-list">
       {
@@ -36,7 +36,12 @@ class BookListContainer extends Component {
   }
 
   render() {
-    const { books, isLoading, error, onAddToCart } = this.props;
+    const { 
+      books, 
+      isLoading, 
+      error, 
+      onAddToCart,
+    } = this.props;
     if (isLoading) return <Spinner />;
     if (error) return <ErrorIndicator error = { error } />;
     return (
@@ -50,7 +55,7 @@ class BookListContainer extends Component {
 const mapStateToProps = ({ books, isLoading, error }) => ({ books, isLoading, error });
 const mapDispatchToProps = (dispatch, { bookstoreService }) => ({
     fetchBooks: fetchBooks(dispatch, bookstoreService),
-    onAddToCart: (id) => dispatch(addBookToCart(id)),
+    onAddToCart: (id) => dispatch(increaseBookInCart(id)),
   });
 
 export default compose(

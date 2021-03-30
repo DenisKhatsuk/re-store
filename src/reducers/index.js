@@ -14,6 +14,11 @@ const updateCartItems = (cartItems, item, idx) => {
     item,
   ];
 
+  if (item.count === 0) return [
+    ...cartItems.slice(0, idx),
+    ...cartItems.slice(idx + 1),
+  ];
+
   return [
     ...cartItems.slice(0, idx),
     item,
@@ -21,7 +26,7 @@ const updateCartItems = (cartItems, item, idx) => {
   ];
 };
 
-const createCartItem = (book, cartItem = {}) => {
+const createCartItem = (book, cartItem = {}, quantity) => {
   const { 
     id = book.id, 
     title = book.title, 
@@ -31,9 +36,21 @@ const createCartItem = (book, cartItem = {}) => {
   return {
     id,
     title,
-    count: count + 1,
-    total: formatNumber(total + book.price),
+    count: count + quantity,
+    total: formatNumber(total + quantity*book.price),
   }
+};
+
+const updateOrder = (state, bookId, quantity = 1) => {
+  const { books, cartItems } = state;
+  const book = books.find(({ id }) => bookId === id);
+  const itemIdx = cartItems.findIndex(({ id }) => bookId === id);
+  const cartItem = cartItems[itemIdx];
+  const newCartItem = createCartItem(book, cartItem, quantity);
+  return {
+    ...state,
+    cartItems: updateCartItems(cartItems, newCartItem, itemIdx),
+  };
 };
 
 const reducer = (state = initialState, action) => {
@@ -59,17 +76,13 @@ const reducer = (state = initialState, action) => {
         isLoading: false,
         error: action.payload,
       };
-    case 'ADD_BOOK_TO_CART':
-      const { books, cartItems } = state;
-      const bookId = action.payload;
-      const book = books.find(({ id }) => bookId === id);
-      const itemIdx = cartItems.findIndex(({ id }) => bookId === id);
-      const cartItem = cartItems[itemIdx];
-      const newCartItem = createCartItem(book, cartItem);
-      return {
-        ...state,
-        cartItems: updateCartItems(cartItems, newCartItem, itemIdx),
-      };
+    case 'INCREASE_BOOK_TO_CART':
+      return updateOrder(state, action.payload);
+    case 'DECREASE_BOOK_IN_CART':
+      return updateOrder(state, action.payload, -1);
+    case 'DELETE_BOOK_FROM_CART':
+      const { count } = state.cartItems.find(({ id }) => action.payload === id);
+      return updateOrder(state, action.payload, -count);
     default:
       return state;
   }
