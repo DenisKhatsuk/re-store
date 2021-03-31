@@ -34,14 +34,15 @@ const createCartItem = (book, cartItem = {}, quantity) => {
 };
 
 const updateOrder = (state, bookId, quantity = 1) => {
-  const { bookList: { books }, shoppingCart: { cartItems } } = state;
+  const { bookList: { books }, shoppingCart: { cartItems, orderTotal } } = state;
   const book = books.find(({ id }) => bookId === id);
   const itemIdx = cartItems.findIndex(({ id }) => bookId === id);
   const cartItem = cartItems[itemIdx];
   const newCartItem = createCartItem(book, cartItem, quantity);
+  const newOrderTotal = formatNumber(orderTotal + quantity*book.price);
   return {
     cartItems: updateCartItems(cartItems, newCartItem, itemIdx),
-    orderTotal: 0,
+    orderTotal: newOrderTotal,
   };
 };
 
