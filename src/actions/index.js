@@ -20,14 +20,7 @@ const booksError = (error) => {
 
 const increaseBookInCart = (bookId) => {
   return {
-    type: 'INCREASE_BOOK_TO_CART',
-    payload: bookId,
-  };
-};
-
-const deleteBookFromCart = (bookId) => {
-  return {
-    type: 'DELETE_BOOK_FROM_CART',
+    type: 'INCREASE_BOOK_IN_CART',
     payload: bookId,
   };
 };
@@ -35,6 +28,13 @@ const deleteBookFromCart = (bookId) => {
 const decreaseBookInCart = (bookId) => {
   return {
     type: 'DECREASE_BOOK_IN_CART',
+    payload: bookId,
+  };
+};
+
+const deleteBookFromCart = (bookId) => {
+  return {
+    type: 'DELETE_BOOK_FROM_CART',
     payload: bookId,
   };
 };

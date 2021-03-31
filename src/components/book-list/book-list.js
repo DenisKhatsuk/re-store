@@ -10,7 +10,7 @@ import { fetchBooks, increaseBookInCart } from '../../actions';
 
 import './book-list.css';
 
-const BookList = ({ books, onAddToCart, onDeleteFromCart }) => {
+const BookList = ({ books, onAddToCart }) => {
   return (
     <ul className = "book-list">
       {
@@ -52,7 +52,7 @@ class BookListContainer extends Component {
   }
 }
 
-const mapStateToProps = ({ books, isLoading, error }) => ({ books, isLoading, error });
+const mapStateToProps = ({ bookList: { books, isLoading, error } }) => ({ books, isLoading, error });
 const mapDispatchToProps = (dispatch, { bookstoreService }) => ({
     fetchBooks: fetchBooks(dispatch, bookstoreService),
     onAddToCart: (id) => dispatch(increaseBookInCart(id)),
